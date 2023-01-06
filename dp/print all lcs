@@ -1,0 +1,66 @@
+int lcs(string a,string b){
+	    	     int n=a.size();
+    int m=b.size();
+     int dp[n+1][m+1];
+    for(int i=0;i<=n;i++)dp[i][0]=0;
+    for(int j=0;j<=m;j++)dp[0][j]=0;
+
+    for(int i=1;i<=n;i++){
+        for(int j=1;j<=m;j++){
+            if(a[i-1]==b[j-1])dp[i][j]=dp[i-1][j-1]+1;
+            else
+            dp[i][j]=max(dp[i-1][j],dp[i][j-1]);
+        }
+    }
+    return dp[n][m];
+	}
+	void solve(string a,string b,int ind1,int ind2,vector<string>&ans,int lcs_len,int cur,string s){
+	    if(cur==lcs_len){
+	        ans.push_back(s);
+	        return;
+	    }
+	int n=a.size();
+	int m=b.size();
+	if(ind1>=n||ind2>=m)return ;
+	    for(char ch='a';ch<='z';ch++){
+	        
+	        for(int i=ind1;i<n;i++){
+	            
+	            if(a[i]==ch){
+	                
+	                for(int j=ind2;j<m;j++){
+	                    if(b[j]==ch&&lcs(a.substr(i),b.substr(j))==lcs_len-cur){
+	                        string str;
+	                        str=s+ch;
+	                        solve(a,b,i+1,j+1,ans,lcs_len,cur+1,str);
+	                        break;
+	                    }
+	                }
+	            }
+	        }
+	    }
+	}
+		vector<string> all_longest_common_subsequences(string a, string b)
+		{
+		    // Code here
+	
+    
+    int lc=lcs(a,b);
+    vector<string>ans,final;
+    int cur_lcs_len=0;
+    int ind1=0,ind2=0;
+    string s;
+    solve(a,b,ind1,ind2,ans,lc,cur_lcs_len,s);
+    sort(ans.begin(),ans.end());
+    string prev=ans[0];
+    final.push_back(prev);
+    for(int i=0;i<ans.size();i++){
+        if(ans[i]==prev)continue;
+        else {
+            prev=ans[i];
+            final.push_back(ans[i]);
+        }
+    }
+    return final;
+    
+		}
