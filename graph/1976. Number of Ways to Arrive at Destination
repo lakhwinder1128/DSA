@@ -1,0 +1,49 @@
+#define ll long long
+class Solution {
+public:
+    int countPaths(int n, vector<vector<int>>& roads) {
+       // int n=roads.size();
+       long long mod=1000000007;
+       vector< pair<ll,ll> >adj[n];
+        for(ll i=0;i<roads.size();i++){
+            adj[roads[i][0]].push_back({roads[i][1],roads[i][2]});
+             adj[roads[i][1]].push_back({roads[i][0],roads[i][2]});
+        }
+        priority_queue<pair<ll,ll>,vector<pair<ll,ll>>,greater<pair<ll,ll>>>pq;
+
+        pq.push({0,0});    //time node
+
+       
+       
+        vector<long long>dis(n,LONG_MAX),paths(n,0);
+        dis[0]=0;
+        paths[0]=1;
+        while(pq.size()){
+            long long prev=pq.top().second;
+            long long dist=pq.top().first;
+            pq.pop();
+         //   if(dist>dis[prev])continue;
+            for(auto i:adj[prev]){
+               
+                long long node=i.first;
+                long long d=i.second;
+                
+                 if(dis[node]>dist+d){
+                     dis[node]=dist+d;
+                     pq.push({dis[node],node});
+                     paths[node]=paths[prev]%mod;
+                 }
+                else if(dis[node]==dist+d){
+                    paths[node]=(paths[prev]+paths[node])%mod;
+                  //  cout<<node<<" "<<prev<<" "<<node<<endl;
+                }
+                       
+               
+                }
+                
+            }
+       
+          
+       return paths[n-1];
+    }
+};
