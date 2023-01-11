@@ -1,0 +1,43 @@
+bool comp(string a,string b){
+    return a.size()<b.size();
+}
+class Solution {
+public:
+   bool isvalid(string a,string b){
+        int n=a.size();
+       int m=b.size();
+       if((n-m)!=1)return false;
+       //if(m>=n&&(m-n)!=1)return false;
+      
+       int i=0,j=0;
+       while(i<n&&j<m){
+           if(a[i]==b[j])i++,j++;
+        else i++;
+          
+       }
+       if(i==n-1&&j==m)return true;
+       if(i==n&&j==m)return true;
+       return false;
+   }
+    int longestStrChain(vector<string>& words) {
+        sort(words.begin(),words.end(),comp);
+        int n=words.size();
+        for(int i=0;i<n;i++)cout<<words[i]<<" ";
+        
+        vector<int>dp(n,1);
+        // vector<int>hash(n);
+        // for(int i=0;i<n;i++)hash[i]=i;
+        int ans=0;
+        for(int i=0;i<n;i++){
+            for(int prev=0;prev<i;prev++){
+             //   cout<<i<<" "<<prev<<" "<<isvalid(words[i],words[prev])<<endl;
+                if(isvalid(words[i],words[prev])&&dp[prev]+1>dp[i]){
+                    dp[i]=dp[prev]+1;
+                }
+            }
+            
+        }
+        
+        for(int i=0;i<dp.size();i++)ans=max(ans,dp[i]);
+        return ans;
+    }
