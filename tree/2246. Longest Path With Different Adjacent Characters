@@ -1,0 +1,38 @@
+ int solve(int node,vector<vector<int>>&adj,string &s,int &ans){
+        int flag=0;
+        char ch=s[node];
+        int res=0;
+        
+        int f=0,se=0;
+        for(auto i:adj[node]){
+           // ans=max(ans,)
+           int len=solve(i,adj,s,ans);
+           
+           if(s[i]==s[node])continue;
+           res=max(len,res);
+           if(len>f){
+               se=f;
+               f=len;
+           }
+           else if(len>se){
+               se=len;
+           }
+
+
+        }
+        ans=max(ans,f+se+1);
+          return res+1;
+        
+        
+    }
+    int longestPath(vector<int>& parent, string s) {
+        int n=parent.size();
+
+        vector<vector<int>>adj(n);
+        for(int i=1;i<n;i++){
+              adj[parent[i]].push_back(i);
+        }
+        int ans=0;
+        solve(0,adj,s,ans);
+        return ans;
+    }
