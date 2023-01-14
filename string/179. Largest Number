@@ -1,0 +1,62 @@
+string largestNumber(vector<int>& nums) {
+        string ans;
+        int n=nums.size();
+        for(int i=0;i<n;i++){
+            for(int j=i;j<n;j++){
+             string a,b;
+             a.append(to_string(nums[i]));
+             a.append(to_string(nums[j]));
+             b.append(to_string(nums[j]));
+             b.append(to_string(nums[i]));
+             if(b>a)swap(nums[i],nums[j]);
+
+            }
+        }
+       for(int i=0;i<n;i++){
+           ans.append(to_string(nums[i]));
+
+       }
+       reverse(ans.begin(),ans.end());
+       while(ans.size()>1&&ans[ans.size()-1]=='0'){
+           ans.pop_back();
+       }
+        reverse(ans.begin(),ans.end());
+       return ans;
+ 
+    }
+    
+    ******************************************************************************************************************************************************
+    
+    faster approach
+    bool comp(string a,string b){
+    if(a+b<=b+a)return false;
+    else return true;                 // true pe swap karta hai
+}
+class Solution {
+public:
+    string largestNumber(vector<int>& nums) {
+        string ans;
+        int n=nums.size();
+      
+       vector<string>v;
+       for(int i=0;i<nums.size();i++){
+           v.push_back(to_string(nums[i]));
+       }
+
+      sort(v.begin(),v.end(),comp);
+       for(int i=0;i<n;i++){
+           ans.append(v[i]);
+
+       }
+    //    reverse(ans.begin(),ans.end());
+    //    while(ans.size()>1&&ans[ans.size()-1]=='0'){
+    //        ans.pop_back();
+    //    }
+    //     reverse(ans.begin(),ans.end());
+    if(ans[0]=='0')return "0";
+       return ans;
+ 
+    }
+};
+/// compare two strings , checking whether ab is greater or ba is greater if  ab is greater a should come first in order , 
+/// if ba is greater order should be changed 
