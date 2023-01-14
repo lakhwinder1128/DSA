@@ -1,0 +1,32 @@
+int  par[28];
+      void makeset(){
+          for(int i=0;i<27;i++)par[i]=i;
+      }
+      int findpar(int n){
+        if(par[n]==n)return n;
+        return par[n]=findpar(par[n]);
+      }
+      void dounion(int u,int v){
+        
+            u=findpar(u);
+            v=findpar(v);
+            
+       
+            if(u<v)par[v]=u;
+            else par[u]=v;
+      }
+    
+    string smallestEquivalentString(string s1, string s2, string s) {
+        
+       
+      for(int i=0;i<27;i++) par[i]=i;
+            for(int i=0;i<s1.size();i++){
+        
+             dounion(s1[i]-'a',s2[i]-'a');
+        }
+        
+        for(int i=0;i<s.size();i++){
+            s[i] = findpar(s[i]-'a')+'a';
+        }
+        return s;
+    }
