@@ -1,0 +1,43 @@
+class Solution {
+public:
+ vector<int>parent,size;
+    int findpar(int node){
+        if(parent[node]==node)return node;
+        return parent[node]=findpar(parent[node]);
+    }
+    void doUnion(int a,int b){
+        int u=findpar(a);
+        int v=findpar(b);
+        if(u==v)return ;
+        if(size[v]<size[u]){
+            size[u]+=size[v];
+            parent[v]=u;
+        }
+        else{
+            size[v]+=size[u];
+            parent[u]=v;
+        }
+    }
+    int makeConnected(int n, vector<vector<int>>& connections) {
+        //so we have to find no. of disconnected computers (c) then c-1 cables will be required to connect them ,
+        if(connections.size()<n-1)return -1;  // connections.size()== total no. of cables present  , for n computer to be connected alleast n-1 cables are required
+           // apply union by size
+        parent.resize(n);
+        size.resize(n);
+        for(int i=0;i<n;i++){
+            size[i]=1;
+            parent[i]=i;
+        }
+
+        for(int i=0;i<connections.size();i++){
+            doUnion(connections[i][0],connections[i][1]);
+        }
+
+        int count=0;
+        for(int i=0;i<n;i++){
+            if(findpar(i)==i)count++;
+        }
+        // count is total no. of disconnected networks 
+        return count-1;
+    }
+};
