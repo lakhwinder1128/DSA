@@ -1,0 +1,63 @@
+class Solution {
+public:
+vector<int>size,parent;
+    int findpar(int node){
+        if(parent[node]==node)return node;
+        return parent[node]=findpar(parent[node]);
+    }
+    void doUnion(int a,int b){
+        int u=findpar(a);
+        int v=findpar(b);
+        if(u==v)return ;
+        if(size[v]<size[u]){
+            parent[v]=u;
+            size[u]+=size[v];
+        }
+        else{
+            parent[u]=v;
+            size[v]+=size[u];
+        }
+    }
+    vector<vector<string>> accountsMerge(vector<vector<string>>& accounts) {
+        
+        int n=accounts.size();
+        size.resize(n);
+        parent.resize(n);
+        for(int i=0;i<n;i++){
+            size[i]=1;
+            parent[i]=i;
+        }
+        unordered_map<string,int>emailmap;
+        for(int i=0;i<accounts.size();i++){
+            for(int j=1;j<accounts[i].size();j++){
+                string s=accounts[i][j];
+                if(emailmap.find(s)==emailmap.end())emailmap[s]=findpar(i);
+                else {
+                    doUnion(i,emailmap[s]);
+                }
+            }
+        }
+        vector<vector<string>>ans(n);
+        for(auto i=emailmap.begin();i!=emailmap.end();i++){
+            string eml=i->first;
+            ans[findpar(i->second)].push_back(eml);  // push this email to it ultimate parent
+        }
+
+        for(int i=0;i<n;i++){
+            sort(ans[i].begin(),ans[i].end());
+
+        }
+        vector<vector<string>>finalans;
+        for(int i=0;i<n;i++){
+            if(ans[i].size()==0)continue;
+            vector<string>v;
+            v.push_back(accounts[i][0]);
+            for(int j=0;j<ans[i].size();j++){
+                v.push_back(ans[i][j]);
+            }
+            finalans.push_back(v);
+        }
+       return finalans;
+
+    }
+};
