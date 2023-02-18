@@ -1,0 +1,43 @@
+class Solution {
+public:
+    long long ans=0;
+    int solve(int node,vector<vector<int>>&adj,int seats,vector<int>&vis){
+       
+        // see it like going from child to parent 
+           // if(adj[node].size()==1||adj[node].size()==0)return 1;
+            int people=0;
+            vis[node]=1;
+        for(auto i:adj[node]){
+            if(vis[i]==0){
+                
+                 people+=solve(i,adj,seats,vis);
+                 
+            }
+        }
+        //now move this group to its parent node in group of seats
+         
+         people++;
+        // cout<<node<<" "<<people<<endl;
+       if(node) ans+=ceil((double)people/seats);
+       // cout<<ceil((double)people/seats)<<endl;
+       return people;
+    }
+    long long minimumFuelCost(vector<vector<int>>& roads, int seats) {
+        int n=roads.size()+1;
+        vector<vector<int>>adj(n);
+        for(int i=0;i<roads.size();i++){
+           
+            
+            adj[roads[i][0]].push_back(roads[i][1]);
+            adj[roads[i][1]].push_back(roads[i][0]); 
+
+            
+        }
+
+         vector<int>vis(n,0);
+         solve(0,adj,seats,vis);
+   
+          return ans;
+
+    }
+};
