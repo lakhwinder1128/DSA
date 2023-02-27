@@ -1,0 +1,21 @@
+ long long solve(long long ind,vector<vector<int>>&rides,vector<long long>&dp,vector<long long>&v){
+        // dist= distance of car from starting point 
+        long long  m=rides.size();
+        if(ind>=m)return 0;
+       if(dp[ind]!=-1)return dp[ind];
+        long long take=0,nottake=0;
+        long long newind=lower_bound(v.begin(),v.end(),rides[ind][1])-v.begin();
+         take=solve(newind,rides,dp,v)+rides[ind][2]+rides[ind][1]-rides[ind][0];
+         nottake=solve(ind+1,rides,dp,v);
+       return dp[ind]=max(take,nottake);
+    }
+    long long maxTaxiEarnings(int n, vector<vector<int>>& rides) {
+        sort(rides.begin(),rides.end());
+        long long ind=0;
+        vector<long long>dp(rides.size()+1,-1);
+        vector<long long>v;  // to store the starting points
+        for(int i=0;i<rides.size();i++){
+            v.push_back(rides[i][0]);
+        }
+        return solve(ind,rides,dp,v);
+    }
