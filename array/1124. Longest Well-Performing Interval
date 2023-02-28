@@ -1,0 +1,22 @@
+ int longestWPI(vector<int>& hours) {
+        unordered_map<int,int>mp;
+        int sum=0;
+        int ans=0;
+       // considering array as array of 1's and -1's
+       for(int i=0;i<hours.size();i++){
+           if(hours[i]>8)sum++;
+           else sum--;
+           if(sum>0){
+               //means no. of 1's are greater than no. of -1's
+               ans=max(ans,i+1);
+              
+
+           }
+           else{
+               if(mp.find(sum-1)!=mp.end())ans=max(ans,i-mp[sum-1]);
+             
+           }
+      if(mp.count(sum)==0)mp[sum]=i;  // else because we want max length so consider earliest occurence
+       }
+       return ans;
+    }
