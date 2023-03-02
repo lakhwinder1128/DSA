@@ -1,0 +1,29 @@
+class Solution {
+public:
+    int threeSumMulti(vector<int>& arr, int target) {
+        unordered_map<int,long long> mp;
+        for(auto i: arr) mp[i]++;
+        int n=arr.size();
+     int mod=1e9+7;
+        long long res = 0;
+        cout<<mp.size();
+       for(auto x:mp){
+           for(auto y:mp){
+             int a=x.first;
+             int b=y.first;
+             int c=target-a-b;
+             if(mp.count(c)==0)continue;
+             if(a==b&&b==c)res=res+(x.second)*(x.second-1)*(x.second-2)/6;
+             else if(a==b&&b!=c){               // 3 cases like it(with same elements)  so consider only 1
+                 res+=mp[a]*(mp[a]-1)*mp[c]/2;
+             }
+              else if(a<b&&b<c){             //  write a<b<c to consider only 1 as there will be many  cases  eg (2,3,4) (2,4,3) (3,4,2) etc
+                 res+=mp[a]*(mp[c])*mp[b];
+             }
+             
+
+           }
+       }
+        return res%mod;
+    }
+};
