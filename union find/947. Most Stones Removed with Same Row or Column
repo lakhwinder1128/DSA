@@ -1,0 +1,53 @@
+class Solution {
+public:
+    vector<int>size,par;
+    void disjointSet(int nodes){
+        size.resize(nodes+1,1);
+        par.resize(nodes+1);
+        for(int i=0;i<nodes+1;i++){
+            par[i]=i;
+        }
+    } 
+    int findPar(int node){
+        if(par[node]==node)return node;
+       return par[node]=findPar(par[node]);
+    }
+    void Union(int a,int b){
+        int u=findPar(a);
+        int v=findPar(b);
+        if(size[v]<size[u]){
+            par[v]=u;
+        }
+        else if(size[v]>size[u]){
+            par[u]=v;
+        }
+        else{
+            par[u]=v;
+            size[v]++;
+        }
+    }
+    int removeStones(vector<vector<int>>& stones) {
+        int maxRows=0,maxCols=0;
+        int n=stones.size();
+        for(auto i:stones){
+            // i is a vector
+            maxRows=max(maxRows,i[0]);
+            maxCols=max(maxCols,i[1]);
+        }
+        disjointSet(maxRows+maxCols+1);
+        // we require no of components(ie. no. of parents ) so push each parent into  some map
+        unordered_map<int,int>mp;
+        for(auto i:stones){
+            int row=i[0];
+            int col=i[1]+maxRows+1;
+            Union(row,col);
+            mp[row]++;
+            mp[col]++;
+        }
+        int count=0;  // to count parents
+        for(auto i:mp){
+            if(i.first==findPar(i.first))count++;
+        }
+        return n-count;
+    }
+};
