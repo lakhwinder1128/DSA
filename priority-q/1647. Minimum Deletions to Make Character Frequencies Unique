@@ -1,0 +1,27 @@
+ int minDeletions(string s) {
+        priority_queue<int>pq;
+        unordered_map<int,int>mp;
+        for(int i=0;i<s.size();i++){
+            mp[s[i]]++;
+        }
+        for(auto i:mp){
+            pq.push(i.second);
+        }
+        int ans=0;
+        int allowed=pq.top()-1;      // it may be possible
+        pq.pop();
+        while(pq.size()){
+           if(allowed<=0){
+               ans+=pq.top();        // we have to remove all occurences of that element
+           }
+           else if(allowed<pq.top()){
+               ans=ans+pq.top()-allowed;
+               allowed--;
+           }
+           else{
+               allowed=pq.top()-1;
+           }
+           pq.pop();
+        }
+        return ans;
+    }
