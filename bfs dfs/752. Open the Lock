@@ -1,0 +1,43 @@
+class Solution {
+public:
+    int openLock(vector<string>& deadends, string target) {
+        unordered_map<string,int>mp;
+        unordered_map<string,int>vis;
+        for(int i=0;i<deadends.size();i++){
+            mp[deadends[i]]++;
+        }
+        queue<string>q; 
+        int turns=0;
+        q.push("0000");
+        vis["0000"]=1;
+        while(q.size()){
+            int size=q.size();
+            for(int i=0;i<size;i++){
+                string s=q.front();
+               
+                q.pop();
+                 if(mp.count(s)!=0)continue;   // s itself is a deadend
+               // cout<<s<<" ";
+                if(s==target)return turns;
+                //max 8 new strings are possible
+                for(int i=0;i<4;i++){
+
+                 string a=s,b=s;
+                if(a[i]=='9')a[i]='0';          //increment
+                else a[i]=a[i]+1;
+                if(b[i]=='0')b[i]='9';         //decrement
+                else b[i]=b[i]-1;
+                if(vis[a]==0&&mp.count(a)==0)q.push(a);
+                if(vis[b]==0&&mp.count(b)==0)q.push(b);
+
+                 vis[a]++;
+                 vis[b]++;
+                }
+              
+                
+            }
+            turns++;
+        }
+        return -1;
+    }
+};
