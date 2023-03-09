@@ -1,0 +1,32 @@
+class Solution {
+public:
+    int solve(int m,int n,int mid){
+        int i=m,j=n;
+        int count=0;
+        while(i*j>mid){
+            i--;
+            j--;
+        }
+        count=count+i*j;
+        i++,j++;
+        while(i<=m)count+=mid/i++;
+        while(j<=n)count+=mid/j++;
+        return count;
+    }
+    int findKthNumber(int m, int n, int k) {
+        int l=1;
+        int h=m*n;
+        int ans=0;
+        while(l<=h){
+            int mid=(l+h)/2;
+            int count =solve(m,n,mid);   // mid se smaller or equal kitne hai
+            ans=mid;
+           // if(count==k)return mid;
+             if(count>=k){
+                h=mid-1;
+            }
+            else l=mid+1;
+        }
+        return l;
+    }
+};
