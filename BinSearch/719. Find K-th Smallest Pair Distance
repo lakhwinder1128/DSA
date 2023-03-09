@@ -1,0 +1,36 @@
+class Solution {
+public:
+    int solve(vector<int>&nums,int limit){
+        int n=nums.size();
+        
+               
+        int count=0;
+        // now count pairs having diff less than limit 
+       
+        //  int i=0,j=0; // i is prev 
+            int j=0;
+             for (int i = 0; i < n; i++) {
+            while (j < n && nums[j] <= nums[i] + limit) j++;
+            count += j - i -1;
+        }
+        return count;
+    }
+    int smallestDistancePair(vector<int>& nums, int k) {
+        sort(nums.begin(),nums.end());
+        int ans=0;
+        int l=0;
+        int n=nums.size();
+        int h=nums[n-1]-nums[0];
+      
+        while(l<h){
+            int m=(l+h)/2;
+            int count=solve(nums,m);  
+            if(count<k)l=m+1;
+            else{
+             h=m;
+            
+            }
+        }
+        return l;
+    }
+};
